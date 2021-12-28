@@ -1,0 +1,44 @@
+일단 아임포트 홈페이지를 가서 회원 가입을 하고
+관리자 체험하기를 눌러서 테스트용 가맹점 번호를 받을 수 있다.
+관리자 페이지에 접속하면 결제를 위한 가맹점 식별코드와 결제 후 관리와 조회를 위한 REST API에 접근하기 위한 키를 확인 할 수 있다.
+
+단순 키 외에도 PG 설정이나 API를 호출할 수 있는 IP를 제한하는 등의 다양한 기능을 포함하고 있습니다.
+지금은 테스트용이므로 별다른 추가 설정없이 PG설정만 KG이니시스로 설정하도록 함. 
+테스트 모드를 ON하면 된다.
+
+그리고 결제창을 넣을 Jsp에 밑에 부분을 넣어 주면된다.
+결제를 요청하는 화면만 구현한 것이다.
+실제 결제는 안된다.
+
+//아임포트 라이브러리 추가하기
+<script type="text/javascript"
+	src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript"
+	src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+
+<script>
+	function requestPay() {
+		IMP.init("iamport");//가맹점 식별코드
+		IMP.request_pay({//param
+			pg : "html5_inicis", //이니시스 웹표준 결제창
+			pay_method : "card", //결제방법
+			merchant_uid : "ORD20211216-0000001", //주문번호
+			name : "${requestInfo.res}'s coaching", //상품명
+			amount : "${requestInfo.realPrice}", //가격
+			buyer_email : "gildong@gmail.com", //이메일
+			buyer_name : "홍길동", //이름
+			buyer_tel : "010-1234-5678", //연락처
+			buyer_addr : "서울특별시 강남구 신사동", //주소
+			buyer_postcode : "00001" //상품코드
+		}, function(rsp) {
+			if (rsp.success) {
+				var msg = '결제가 완료되었습니다.';
+			} else {
+				var msg = '결제에 실패하였습니다.';
+			}
+		});
+	}
+</script>
+
+
+	
